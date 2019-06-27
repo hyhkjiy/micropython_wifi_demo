@@ -22,9 +22,9 @@ def network_connect():
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(True)
 
-    ssid = ConfigFile.get('wifi').get('ssid')
+    ssid = ConfigFile.get('wifi', {}).get('ssid')
     if ssid:
-        sta_if.connect(ssid, ConfigFile.get('wifi').get('pwd'))
+        sta_if.connect(ssid, ConfigFile.get('wifi', {}).get('pwd'))
 
     if not wifi_connected(sta_if):
         ap = network.WLAN(network.AP_IF)  # create access-point interface
