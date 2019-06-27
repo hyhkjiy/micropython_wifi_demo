@@ -62,7 +62,7 @@ def network_connect():
                 'Message': '连接失败！'
             })
 
-        srv = MicroWebSrv(webPath='/src/templates/')
+        srv = MicroWebSrv(webPath='/templates/')
         srv.MaxWebSocketRecvLen = 256
         srv.WebSocketThreaded = False
         srv.Start()
