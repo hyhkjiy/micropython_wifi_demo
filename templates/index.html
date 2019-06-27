@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimal-ui, user-scalable=no, initial-scale=1.0">
+    <title>设备WiFi</title>
+    <style>
+        .form {
+            width: 200px;
+            margin: auto;
+            margin-top: 200px;
+        }
+
+        .form .filed {
+            width: 80%;
+            height: 38px;
+            margin: 10px 0;
+        }
+
+        .form .button {
+            width: 100%;
+            height: 45px;
+            color: #fff;
+            background: #00f;
+            border-radius: 10px;
+            margin: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+
+<form class="form" onsubmit="return false">
+    <h1>WIFI连接</h1>
+    <select class="filed" id="ssid" placeholder="请输入会议地址">
+        <option>加载中...</option>
+    </select>
+    <a href="javascript:scan_ap();">扫描</a>
+    <input class="filed" type="password" name="wifiPass" id="pwd" placeholder="请输入WiFi密码">
+    <button class="button" onclick="connect()">连接</button>
+</form>
+
+<script>
+    function connect() {
+        var ssid = document.getElementById('ssid').value
+        var pwd = document.getElementById('pwd').value
+        fetch('/connect', {
+            method: 'post',
+            body: JSON.stringify({
+                ssid: ssid,
+                pwd: pwd
+            })
+        }).then(function (res) {
+            console.info(res)
+        })
+    }
+
+    function scan_ap() {
+        fetch('/aps', {
+            method: 'get'
+        }).then(function (res) {
+            res.json().then(function (data) {
+                var $ssid = document.getElementById('ssid')
+                var options = ''
+                data.forEach(function (ap_name) {
+                    options += '\n<option value="' + ap_name + '">' + ap_name + '</option>>'
+                })
+                $ssid.innerHTML = options
+            })
+        })
+    }
+
+    window.onload = scan_ap
+
+</script>
+
+
+</body>
+</html>
